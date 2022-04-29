@@ -18,7 +18,6 @@ import pandas as pd
 
 def train_model():
     start = timeit.timeit()
-    # Read images from target directories to 80x80 grayscale
     train_n = png_load('train_data/non_target_train', 50)
     train_t = png_load('train_data/target_train', 30)
     test_n = png_load('train_data/non_target_dev', 5)
@@ -48,13 +47,17 @@ def train_model():
     """
 
     model = Sequential()
-    model.add(layers.Conv2D(filters=512, kernel_size=(3, 3), activation='relu', input_shape=(80, 80, 3)))
+    model.add(layers.Conv2D(filters=16, kernel_size=(3, 3), activation='relu', input_shape=(80, 80, 3)))
     model.add(layers.MaxPooling2D(pool_size=(2, 2)))
-    #model.add(Dropout(0.4))
+    model.add(Dropout(0.4))
+
+    model.add(layers.Conv2D(filters=32, kernel_size=(3, 3), activation='relu'))
+    model.add(layers.MaxPooling2D(pool_size=(2, 2)))
+    model.add(Dropout(0.3))
 
     model.add(layers.Flatten())
-    model.add(layers.Dense(units=4096, activation='relu'))
-    model.add(layers.Dense(units=4096, activation='relu'))
+    model.add(layers.Dense(units=256, activation='relu'))
+    model.add(layers.Dense(units=64, activation='relu'))
     model.add(layers.Dense(units=2, activation='softmax'))
 
     batch_size = 20  # 20
