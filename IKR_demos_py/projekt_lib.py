@@ -1,9 +1,11 @@
 from glob import glob
 
+import cv2
 import numpy as np
 from scipy.io import wavfile
 from ikrlib import mfcc
 from imageio import imread
+
 
 def test():
     print("hey lib")
@@ -29,8 +31,23 @@ def png2fea(dir_name):
     Loads all *.png images from directory dir_name into a dictionary. Keys are the file names
     and values and 2D numpy arrays with corresponding grayscale images
     """
-    features = {}
+    data = []
     for f in glob(dir_name + '/*.png'):
         print('Processing file: ', f)
-        features[f] = imread(f, True).astype(np.float64)
-    return features
+        data.append(cv2.imread(f, cv2.IMREAD_GRAYSCALE).astype(np.float64))
+    return np.array(data)
+
+
+def png_load(dir_name):
+    data = []
+    file_names = []
+    for f in glob(dir_name + '/*.png'):
+        print('Processing file: ', f)
+        file_names.append(f)
+        # features.append(cv2.imread(f, cv2.IMREAD_GRAYSCALE).astype(np.float64))
+        #img = cv2.imread(f, cv2.IMREAD_COLOR).astype(np.float64)
+        img = cv2.imread(f, cv2.IMREAD_GRAYSCALE).astype(np.float64)
+        img = img / 255
+        data.append(img)
+
+    return np.array(data), np.array(file_names)
