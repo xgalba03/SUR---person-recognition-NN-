@@ -18,17 +18,16 @@ import pandas as pd
 
 def train_model():
     start = timeit.timeit()
-    train_n = png_load('train_data/non_target_train', 50)
-    train_t = png_load('train_data/target_train', 30)
-    test_n = png_load('train_data/non_target_dev', 5)
-    test_t = png_load('train_data/target_dev', 5)
+    train_n = png_load('train_data/non_target_train', 100)
+    train_t = png_load('train_data/target_train', 50)
+    test_n = png_load('train_data/non_target_dev', 40)
+    test_t = png_load('train_data/target_dev', 20)
 
     # label vector to determine class of img
     train_labels = np.r_[np.ones(len(train_t)), np.zeros(len(train_n))]
     test_labels = np.r_[np.ones(len(test_t)), np.zeros(len(test_n))]
     train_labels = tf.keras.utils.to_categorical(train_labels, 2)
     test_labels = tf.keras.utils.to_categorical(test_labels, 2)
-
     # merge classes
     train_data = np.r_[train_t, train_n]
     test_data = np.r_[test_t, test_n]
@@ -49,11 +48,11 @@ def train_model():
     model = Sequential()
     model.add(layers.Conv2D(filters=16, kernel_size=(3, 3), activation='relu', input_shape=(80, 80, 3)))
     model.add(layers.MaxPooling2D(pool_size=(2, 2)))
-    model.add(Dropout(0.4))
+    model.add(Dropout(0.3))
 
     model.add(layers.Conv2D(filters=32, kernel_size=(3, 3), activation='relu'))
     model.add(layers.MaxPooling2D(pool_size=(2, 2)))
-    model.add(Dropout(0.3))
+    model.add(Dropout(0.2))
 
     model.add(layers.Flatten())
     model.add(layers.Dense(units=256, activation='relu'))
@@ -82,6 +81,7 @@ def train_model():
     end = timeit.timeit()
     duration = end - start
     print("Training dataset size:", len(train_data))
+    print("Validation dataset size:", len(test_t) + len(test_n))
     print("Model training time: ", duration)
 
     model.save('my_model')

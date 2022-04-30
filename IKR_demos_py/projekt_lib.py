@@ -61,13 +61,24 @@ def display_image(im_data):
     plt.show()
 
 
-def augment_img(image):
-    transform = A.Compose([
-        A.HorizontalFlip(p=0.5),
-        A.RandomBrightnessContrast(p=0.5),
-        A.ShiftScaleRotate(shift_limit=0, scale_limit=(0, 0.1), rotate_limit=45, p=0.50),
-        A.Blur(blur_limit=3)
-    ])
+def augment_img(image, major=False):
+    if major:
+        transform = A.Compose([
+            A.HorizontalFlip(p=0.5),
+            A.RandomBrightnessContrast(p=0.5),
+            A.ShiftScaleRotate(shift_limit=0, scale_limit=(0, 0.1), rotate_limit=45, p=0.50),
+            # A.Blur(blur_limit=3),
+            A.OneOf([
+                A.GaussNoise(p=0.3, mean=50, var_limit=(10, 100)),
+                A.MultiplicativeNoise(p=0.5, multiplier=(0.7, 1.5), per_channel=True, elementwise=True)
+            ])
+        ])
+    else:
+        transform = A.Compose([
+            A.HorizontalFlip(p=0.5),
+            A.RandomBrightnessContrast(p=0.5),
+            A.ShiftScaleRotate(shift_limit=0, scale_limit=(0, 0.1), rotate_limit=45, p=0.50),
+        ])
     augmented_image = transform(image=image)['image']
     return augmented_image
 
@@ -88,7 +99,11 @@ def png_load(dir_name, augment_count=0):
         # display_image(image)
 
         for x in range(augment_count):
-            augmented_image = augment_img(image)
+            if x > (augment_count // 2):
+                augmented_image = augment_img(image, major=True)
+
+            else:
+                augmented_image = augment_img(image)
             img_a = augmented_image / 255
             data.append(img_a)
             # display_image(augmented_image)
@@ -103,7 +118,7 @@ def eval_load(dir_name):
         # print('Processing file: ', f)
         file_names.append(f)
         # features.append(cv2.imread(f, cv2.IMREAD_GRAYSCALE).astype(np.float64))
-        #img = cv2.imread(f, cv2.IMREAD_COLOR).astype(np.float64)
+        # img = cv2.imread(f, cv2.IMREAD_COLOR).astype(np.float64)
         # img = cv2.imread(f, cv2.IMREAD_GRAYSCALE).astype(np.float64)
         image = cv2.imread(f)
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
