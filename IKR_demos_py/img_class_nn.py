@@ -1,3 +1,4 @@
+import os.path
 import timeit
 from os import path
 from statistics import mean
@@ -14,6 +15,7 @@ from projekt_lib import png_load, eval_load
 import tensorflow as tf
 from tensorflow.keras.optimizers import RMSprop, SGD, Adam
 import pandas as pd
+import re
 
 
 def train_model():
@@ -101,4 +103,22 @@ if __name__ == "__main__":
     est = model.predict(eval_data)
     df = pd.DataFrame(est)
     df['filename'] = files
-    print(est)
+
+    if os.path.isfile('result_img.txt'):
+        os.remove('result_img.txt')
+
+    f = open("result_img.txt", "a")
+    for num, row in df.iterrows():
+        filename = re.search("eval_[0-9][0-9][0-9][0-9]", row['filename'])
+        filename = row['filename'][filename.start():filename.end()]
+
+        if row.iloc[1] > 0.9:
+            hard_decision = 1
+
+        else:
+            hard_decision = 0
+
+        string = "{} {} {}\n".format(filename, round(row.iloc[1], 2), hard_decision)
+        f.write(string)
+
+    f.close()
