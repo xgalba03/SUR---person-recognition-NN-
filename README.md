@@ -1,8 +1,6 @@
 # SUR
 VUT-FIT SUR projekt
 
-
-
 ## Klasifikátor obličeje
 Pro vytvoření modelu klasifikátoru obličeje jsme se rozhodli využít konvoluční neuronovu síť, která má následující strukturu.
 
@@ -33,5 +31,19 @@ Obrázky jsou uloženy jako pole (80x80x3) matic s hodnotami normalizovanými do
 
 ### Trénování 
 Neuronová síť je trénována pomocí batchů o velikosti 20 na 11 epoch.
+Dosažené kvality neuronové sítě na validačních datech je možno vidět na následujicím obrázku.
 
 ![Training of the model](training.png)
+
+### Klasifikace
+Při testování na jednotlivých obrázích jsem zjistil že klasifikátor funguje celkem pěkně, ale někdy se "sekne" a označí jako target osobu non-target data s velkou pravděpodobností (>0.9).
+Bohužel se mi toto nepodařilo nijak vyřešit.
+Hard decision práh pro klasifikaci jsem experimentélně určil na 0.9 (pro target) tak že > 0.9 -> hard decision = 1
+
+## Použití
+Řešení produkuje celkem 3 result soubory, jeden pouze ze zpracování png, druhý ze zpracování wav a třetí z kombinace zpracování png a wav souboru.
+
+1. result_img.txt - soubor s výsledky ze zpracování png souborů (spuštění skriptu img_class_nn.py)
+TODO: dopsat 2. 3.
+
+
