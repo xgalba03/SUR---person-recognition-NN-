@@ -43,7 +43,7 @@ Hard decision práh pro klasifikaci jsem experimentélně určil na 0.9 (pro tar
 ## Použití
 Řešení produkuje celkem 3 result soubory, jeden pouze ze zpracování png, druhý ze zpracování wav a třetí z kombinace zpracování png a wav souboru.
 
-1. result_img.txt - soubor s výsledky ze zpracování png souborů (spuštění skriptu img_class_nn.py)
+1. image_CNN.txt - soubor s výsledky ze zpracování png souborů (spuštění skriptu img_class_nn.py). Skript očekává složku s trénovacímí daty ve stejném adresáři. Pro spuštění skriptu je třeba nejprve doinstalovat všechny moduly, které potřebuje pomocí 'pip -install'
 TODO: dopsat 2. 3.
 
 
