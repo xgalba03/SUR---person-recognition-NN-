@@ -1,6 +1,8 @@
 # SUR
 VUT-FIT SUR projekt
 
+xgalba03, xpomyk04
+
 ## Klasifikátor obličeje
 Pro vytvoření modelu klasifikátoru obličeje jsme se rozhodli využít konvoluční neuronovu síť, která má následující strukturu.
 
@@ -39,6 +41,21 @@ Dosažené kvality neuronové sítě na validačních datech je možno vidět na
 Při testování na jednotlivých obrázích jsem zjistil že klasifikátor funguje celkem pěkně, ale někdy se "sekne" a označí jako target osobu non-target data s velkou pravděpodobností (>0.9).
 Bohužel se mi toto nepodařilo nijak vyřešit.
 Hard decision práh pro klasifikaci jsem experimentélně určil na 0.9 (pro target) tak že > 0.9 -> hard decision = 1
+
+## Klasifikátor reči
+
+Klasifikátor rečových dát vo formáte .wav bol implementovaný pomocou Gaussian Mixture Modelu (GMM) vyuýívajúceho EM algoritmus na jednotlivé ktorý výpočtu
+
+Štruktúra zdrojového kódu:
+    -načítanie vstpuných dát na trénovanie a klasifikáciu
+    -vytvorenie MFCC koeficientov z dát a ich transponovanie a uloženie do dátovej štruktúry
+    -určenie vstupných koeficientov GMM modelu (prebieha náhodne)
+    -iterácia EM algoritmu pokiaľ dáta neskonvergujú
+    -využitie natrénovaných koeficientov na odhadnutie/určenie klasifikácie testovacích dát
+    -uloženie výsledkov do súboru .txt
+
+### Klasifikace
+    Pri prehodnotení hodnôt vyplívajúcih z GMM boli hodnoty prevedené do intervalu 0-100. Kvôli veľkému rozsahu pôvodných hodnôt bol testovaním učený prah pozitívnej klasifikácie na hodnotu 0.98. (hard decision)
 
 ## Použití
 Řešení produkuje celkem 3 result soubory, jeden pouze ze zpracování png, druhý ze zpracování wav a třetí z kombinace zpracování png a wav souboru.
