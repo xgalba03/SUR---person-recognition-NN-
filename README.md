@@ -58,9 +58,14 @@ Klasifikátor rečových dát vo formáte .wav bol implementovaný pomocou Gauss
     Pri prehodnotení hodnôt vyplívajúcih z GMM boli hodnoty prevedené do intervalu 0-100. Kvôli veľkému rozsahu pôvodných hodnôt bol testovaním učený prah pozitívnej klasifikácie na hodnotu 0.98. (hard decision)
 
 ## Použití
-Řešení produkuje celkem 3 result soubory, jeden pouze ze zpracování png, druhý ze zpracování wav a třetí z kombinace zpracování png a wav souboru.
+Řešení produkuje celkem 3 result soubory, jeden pouze ze zpracování png, druhý ze zpracování wav a třetí z kombinace zpracování png a wav souboru. 
 
 1. image_CNN.txt - soubor s výsledky ze zpracování png souborů (spuštění skriptu img_class_nn.py). Skript očekává složku s trénovacímí daty ve stejném adresáři. Pro spuštění skriptu je třeba nejprve doinstalovat všechny moduly, které potřebuje pomocí 'pip -install'
-TODO: dopsat 2. 3.
+
+2. audio_GMM.txt - súbor s výsledkami hodnotenia audio nahrávok, vytvára sa pomocou spustenia skriptu audio_GMM.py a očakáva zložku testovacích dát s názvom 'eval' v rovnakom adresári ako zdrojový kód. Trénovacie dáta sa nachádzajú v zložke train_data/
+
+3. results.txt - súbor obsahujúci výsledky z kombinovanej klasifikácie - audio + obrázok. Pre vyhodnotenie úspešnej klasifikácie musí násobok pravdepodobností dielčich skriptov dosahovať hodnotu 89% - 0.89
+
+
 
 
